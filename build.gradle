@@ -1,0 +1,68 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+buildscript {
+
+    ext {
+        guavaVersion = "29.0-jre"
+        vavrVersion = "0.10.3"
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id "org.springframework.boot" version "2.3.0.RELEASE"
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    id "idea"
+    id "java"
+}
+
+group "com.yourgroup"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+sourceCompatibility = 11.0
+targetCompatibility = 11.0
+
+dependencyManagement {
+    imports {
+        mavenBom SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor(
+        "org.projectlombok:lombok",
+    )
+    implementation(
+        "org.apache.commons:commons-lang3",
+        "com.google.guava:guava:${guavaVersion}",
+        "io.vavr:vavr:${vavrVersion}",
+    )
+
+    testCompileOnly "org.projectlombok:lombok"
+    testAnnotationProcessor(
+        "org.projectlombok:lombok",
+    )
+    testImplementation(
+        "org.springframework.boot:spring-boot-starter-test",
+        "org.junit.jupiter:junit-jupiter-api",
+        "org.junit.jupiter:junit-jupiter-params",
+        "org.assertj:assertj-core"
+    )
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+}
+
+test {
+    useJUnitPlatform()
+}
